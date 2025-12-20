@@ -2,65 +2,6 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
-st.markdown(
-    """
-    <style>
-    /* App background */
-    .stApp {
-        background-color: #0E1117;
-        color: white;
-    }
-
-    /* Center content */
-    section.main > div {
-        padding-top: 2rem;
-    }
-
-    /* Selectbox & button */
-    div[data-baseweb="select"] > div {
-        background-color: #1c1f26;
-        color: white;
-    }
-
-    button[kind="primary"] {
-        background-color: #E50914;
-        color: white;
-        border-radius: 8px;
-        font-weight: bold;
-    }
-
-    button[kind="primary"]:hover {
-        background-color: #b20710;
-    }
-
-    /* Movie poster hover effect */
-    img {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    img:hover {
-        transform: scale(1.05);
-        box-shadow: 0px 10px 30px rgba(229,9,20,0.6);
-    }
-
-    /* Movie title */
-    h5 {
-        color: #ffffff;
-        font-weight: 600;
-    }
-
-    /* Telegram section */
-    .telegram-box {
-        background-color: #1c1f26;
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 30px;
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
 
@@ -108,7 +49,7 @@ def recommend(movie):
     movie_index = movies[movies['title'] == movie].index[0]
     distances = similarity[movie_index]
 
-    movies_list = sorted(list(enumerate(distances)),reverse=True,key=lambda x: x[1])[1:5]
+    movies_list = sorted(list(enumerate(distances)),reverse=True,key=lambda x: x[1])[1:13]
 
     recommended_movies = []
     recommended_movie_posters = []
@@ -156,56 +97,45 @@ if st.button("Recommend"):
 
 
 
-    cols = st.columns(4)
+    i = 0
+    while i < 12:
+       cols = st.columns(4)
 
-    for i in range(4):
-        with cols[i]:
-            st.markdown(
-                f"<h5 style='text-align:center; min-height:60px'>{names[i]}</h5>",
-                unsafe_allow_html=True
-            )
+       for col in cols:
+            if i < 12:
+                with col:
+                    st.markdown(
+                    f"<h5 style='text-align:center; min-height:60px'>{names[i]}</h5>",
+                    unsafe_allow_html=True
+                )
 
-            # Clickable poster  YouTube trailer
-            st.markdown(
-                f"""
-                <a href="{trailers[i]}" target="_blank">
-                    <img src="{posters[i]}" style="width:100%; border-radius:10px;">
-                </a>
-                """,
-                unsafe_allow_html=True
-            )
+                    st.markdown(
+                    f"""
+                    <a href="{trailers[i]}" target="_blank">
+                        <img src="{posters[i]}" style="width:100%; border-radius:10px;">
+                    </a>
+                    """,
+                    unsafe_allow_html=True
+                )
+                i += 1
+
 
     # Telegram button
     telegram_link1 = "tg://resolve?domain=Isfjyhehbot"
     telegram_link2 = "tg://resolve?domain=M4MoviezzBot"
     st.markdown(
-    """
-    <div class="telegram-box">
-        <h2 style="color:#E50914;">🍿 Start Streaming Now</h2>
-        <p>Redirects to our Telegram bot where you can search, watch, or download movies.</p>
-    </div>
+    """<h1 style='color:#E50914; text-align:center;'>🍿 Start Streaming Now</h1>
     """,
-    unsafe_allow_html=True
-)
+    unsafe_allow_html=True)
 
     st.markdown(
-    """
-    <style>
-    /* Link button styling */
-    a[data-testid="stLinkButton"] > button {
-        padding: 16px 30px;
-        font-size: 18px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-        border-radius: 12px;
-        font-weight: 700;
-    }
-    </style>
+    """<h4 style='text-align:center; color:#E50914'>Redirects to our Telegram bot where you can search, watch, or download movies.</h4>
     """,
-    unsafe_allow_html=True
-)
-    
-    st.write("Select a Telegram bot to unlock unlimited movies for streaming or download.")
+    unsafe_allow_html=True)
+
+
+
+    st.markdown("""<i>Select a Telegram bot to unlock unlimited movies for streaming or download</i>""",unsafe_allow_html=True)
 
     st.link_button(
     "🎬 BOT 1!",
@@ -215,7 +145,7 @@ if st.button("Recommend"):
     "🎬 BOT 2!",
     telegram_link2
 )
-    st.write('Website where you can download without subscription')
+    st.markdown('''<i>Website where you can download without subscription</i>''',unsafe_allow_html=True)
     st.link_button(
         "🎬 Moviesmode!",
         'https://moviesmod.cards/'

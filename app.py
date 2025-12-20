@@ -80,20 +80,7 @@ selected_movie_name = st.selectbox("Search movies",movies['title'].values)
 
 if st.button("Recommend"):
     names, posters, trailers = recommend(selected_movie_name)
-    st.markdown(
-    """
-    <h3 style="
-        color: #E50914;
-        font-weight: bold;
-        text-align: center;
-        letter-spacing: 0.5px;
-        margin-bottom: 30px;
-    ">
-    ❤️ Loved a recommendation? Click on the movie image to dive straight into its trailer!
-    </h3>
-    """,
-    unsafe_allow_html=True
-)
+   
 
 
 

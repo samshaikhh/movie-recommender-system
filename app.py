@@ -2,6 +2,66 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+st.markdown(
+    """
+    <style>
+    /* App background */
+    .stApp {
+        background-color: #0E1117;
+        color: white;
+    }
+
+    /* Center content */
+    section.main > div {
+        padding-top: 2rem;
+    }
+
+    /* Selectbox & button */
+    div[data-baseweb="select"] > div {
+        background-color: #1c1f26;
+        color: white;
+    }
+
+    button[kind="primary"] {
+        background-color: #E50914;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    button[kind="primary"]:hover {
+        background-color: #b20710;
+    }
+
+    /* Movie poster hover effect */
+    img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    img:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 10px 30px rgba(229,9,20,0.6);
+    }
+
+    /* Movie title */
+    h5 {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    /* Telegram section */
+    .telegram-box {
+        background-color: #1c1f26;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 30px;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 
 
@@ -70,12 +130,31 @@ movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 
-st.title("🎬 Movie Recommender System")
+st.markdown(
+    "<h1 style='color:#E50914; text-align:center;'>🎬 Movie Recommender System</h1>",
+    unsafe_allow_html=True
+)
 
 selected_movie_name = st.selectbox("Search movies",movies['title'].values)
 
 if st.button("Recommend"):
     names, posters, trailers = recommend(selected_movie_name)
+    st.markdown(
+    """
+    <h3 style="
+        color: #E50914;
+        font-weight: bold;
+        text-align: center;
+        letter-spacing: 0.5px;
+        margin-bottom: 30px;
+    ">
+    ❤️ Loved a recommendation? Click on the movie image to dive straight into its trailer!
+    </h3>
+    """,
+    unsafe_allow_html=True
+)
+
+
 
     cols = st.columns(4)
 
@@ -97,8 +176,55 @@ if st.button("Recommend"):
             )
 
     # Telegram button
-    telegram_link = "tg://resolve?domain=Isfjyhehbot"
+    telegram_link1 = "tg://resolve?domain=Isfjyhehbot"
+    telegram_link2 = "tg://resolve?domain=M4MoviezzBot"
+    st.markdown(
+    """
+    <div class="telegram-box">
+        <h2 style="color:#E50914;">🍿 Start Streaming Now</h2>
+        <p>Redirects to our Telegram bot where you can search, watch, or download movies.</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+    st.markdown(
+    """
+    <style>
+    /* Link button styling */
+    a[data-testid="stLinkButton"] > button {
+        padding: 16px 30px;
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+    
+    st.write("Select a Telegram bot to unlock unlimited movies for streaming or download.")
+
     st.link_button(
-        "🎬 Enjoy Unlimited Movies for FREE on Telegram!",
-        telegram_link
+    "🎬 BOT 1!",
+    telegram_link1
+)
+    st.link_button(
+    "🎬 BOT 2!",
+    telegram_link2
+)
+    st.write('Website where you can download without subscription')
+    st.link_button(
+        "🎬 Moviesmode!",
+        'https://moviesmod.cards/'
     )
+
+    st.link_button(
+        '🎬 Vegamovies!',
+        'https://vega-r.com/hollywood-movies/'
+    )
+
+
+

@@ -132,7 +132,7 @@ if st.button("Recommend"):
     "🎬 BOT 2!",
     telegram_link2
 )
-    st.markdown('''<i>Website where you can download without subscription</i>''',unsafe_allow_html=True)
+    st.markdown('''<i>Website where you can download movies without subscription</i>''',unsafe_allow_html=True)
     st.link_button(
         "🎬 Moviesmode!",
         'https://moviesmod.cards/'

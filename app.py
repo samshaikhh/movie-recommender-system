@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 import requests
 import base64
-st.set_page_config(page_title="GeniusX",page_icon='🎬',layout='centered')
+st.set_page_config(page_title="GeniusX",page_icon='🎬')
 
 # Function to set background image
 def add_bg_from_local(image_path):
@@ -24,7 +24,7 @@ def add_bg_from_local(image_path):
     )
 
 # Use the function with your path
-add_bg_from_local(r"C:\Users\GW-ADMIN\Desktop\STP\movie-recommender-system\GeniusX.jpeg")
+add_bg_from_local(r"GeniusX.jpeg")
 
 
 

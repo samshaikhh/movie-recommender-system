@@ -2,10 +2,35 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+import base64
+st.set_page_config(page_title="GeniusX",page_icon='🎬',layout='centered')
+
+# Function to set background image
+def add_bg_from_local(image_path):
+    with open(image_path, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode()
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded_string}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Use the function with your path
+add_bg_from_local(r"C:\Users\GW-ADMIN\Desktop\STP\movie-recommender-system\GeniusX.jpeg")
 
 
 
 
+
+# fetch poster
 def fetch_poster(movie_id):
     try:
         response = requests.get(
@@ -71,10 +96,7 @@ movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 
-st.markdown(
-    "<h1 style='color:#E50914; text-align:center;'>🎬 Movie Recommender System</h1>",
-    unsafe_allow_html=True
-)
+st.title('🎬 Movie Recommender System')
 
 selected_movie_name = st.selectbox("Search movies",movies['title'].values)
 
@@ -110,16 +132,10 @@ if st.button("Recommend"):
     # Telegram button
     telegram_link1 = "tg://resolve?domain=Isfjyhehbot"
     telegram_link2 = "tg://resolve?domain=M4MoviezzBot"
-    st.markdown(
-    """<h1 style='color:#E50914; text-align:center;'>🍿 Start Streaming Now</h1>
-    """,
-    unsafe_allow_html=True)
 
-    st.markdown(
-    """<h4 style='text-align:center; color:#E50914'>Redirects to our Telegram bot where you can search, watch, or download movies.</h4>
-    """,
-    unsafe_allow_html=True)
+    st.title('🍿 Start Streaming Now')
 
+    st.subheader('Redirects to our Telegram bot where you can search, watch, or download movies')
 
 
     st.markdown("""<i>Select a Telegram bot to unlock unlimited movies for streaming or download</i>""",unsafe_allow_html=True)

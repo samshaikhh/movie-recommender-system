@@ -5,10 +5,9 @@ import requests
 import base64
 st.set_page_config(page_title="GeniusX",page_icon='🎬')
 
-# Function to set background image
-import streamlit as st
-import base64
+st.title('🎬 Movie Recommender System')
 
+# Function to set background image
 def add_bg_from_local(image_path):
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode()
@@ -16,21 +15,29 @@ def add_bg_from_local(image_path):
     st.markdown(
         f"""
         <style>
-        /* Desktop and large screens */
+        /* Background image */
         .stApp {{
             background-image: url("data:image/png;base64,{encoded_string}");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
+
+            /* Text color for all content */
+            color: darkred;
+        }}
+
+        /* Headings specifically */
+        .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {{
+            color: white;
         }}
 
         /* Mobile screens */
         @media only screen and (max-width: 768px) {{
             .stApp {{
-                background-size: cover;       /* full screen cover */
-                background-position: center;  /* center image */
-                background-attachment: scroll; /* mobile-friendly */
+                background-size: cover;
+                background-position: center;
+                background-attachment: scroll;
             }}
         }}
         </style>
@@ -109,10 +116,8 @@ movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
 
-
-st.title('🎬 Movie Recommender System')
-
-selected_movie_name = st.selectbox("Search movies",movies['title'].values)
+search = st.subheader('✨ Explore Top Movie Recommendations')
+selected_movie_name = st.selectbox("",movies['title'].values)
 
 if st.button("Recommend"):
     names, posters, trailers = recommend(selected_movie_name)

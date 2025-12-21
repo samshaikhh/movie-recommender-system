@@ -6,17 +6,32 @@ import base64
 st.set_page_config(page_title="GeniusX",page_icon='🎬')
 
 # Function to set background image
+import streamlit as st
+import base64
+
 def add_bg_from_local(image_path):
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode()
+    
     st.markdown(
         f"""
         <style>
+        /* Desktop and large screens */
         .stApp {{
             background-image: url("data:image/png;base64,{encoded_string}");
             background-size: cover;
             background-repeat: no-repeat;
+            background-position: center;
             background-attachment: fixed;
+        }}
+
+        /* Mobile screens */
+        @media only screen and (max-width: 768px) {{
+            .stApp {{
+                background-size: cover;       /* full screen cover */
+                background-position: center;  /* center image */
+                background-attachment: scroll; /* mobile-friendly */
+            }}
         }}
         </style>
         """,
@@ -24,8 +39,7 @@ def add_bg_from_local(image_path):
     )
 
 # Use the function with your path
-add_bg_from_local(r"GeniusX.jpeg")
-
+add_bg_from_local(r"image.jpeg")
 
 
 

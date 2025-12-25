@@ -24,7 +24,7 @@ def add_bg_from_local(image_path):
             background-attachment: fixed;
 
             /* Text color for all content */
-            color: darkred;
+            color: white;
         }}
 
         /* Headings specifically */
@@ -89,6 +89,23 @@ def fetch_trailer(movie_id):
 
     return "https://www.youtube.com"
 
+def details(movie_id):
+    director = "Not Available"
+    release_date = "No Available"
+    try:
+        movie_response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=4ba10b19e27e128814cbc0b98281f1b4&language=en-US",timeout=5).json()
+
+        release_date = movie_response.get("release_date","Not Available")
+        credits_response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=4ba10b19e27e128814cbc0b98281f1b4",timeout=5).json()
+
+        for person in credits_response.get('crew',[]):
+            if person.get('job')=='Director':
+                director = person.get('name')
+                break
+
+    except Exception as e:
+        pass
+    return director , release_date        
 
 
 def recommend(movie):
@@ -96,19 +113,21 @@ def recommend(movie):
     distances = similarity[movie_index]
 
     movies_list = sorted(list(enumerate(distances)),reverse=True,key=lambda x: x[1])[0:12]
-
+    
+    recommended_details = []
     recommended_movies = []
     recommended_movie_posters = []
     recommended_movie_trailers = []
 
     for i in movies_list:
         movie_id = movies.iloc[i[0]].movie_id
-
+        
+        recommended_details.append(details(movie_id))
         recommended_movies.append(movies.iloc[i[0]].title)
         recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_trailers.append(fetch_trailer(movie_id))
 
-    return recommended_movies, recommended_movie_posters, recommended_movie_trailers
+    return  recommended_details,  recommended_movies, recommended_movie_posters, recommended_movie_trailers
 
 
 
@@ -120,63 +139,72 @@ search = st.subheader('✨ Explore Top Movie Recommendations')
 selected_movie_name = st.selectbox("",movies['title'].values)
 
 if st.button("Recommend"):
-    names, posters, trailers = recommend(selected_movie_name)
-   
-
-
+    details_list, names, posters, trailers = recommend(selected_movie_name)
 
     i = 0
     while i < 12:
-       cols = st.columns(4)
+        cols = st.columns(4)
 
-       for col in cols:
+        for col in cols:
             if i < 12:
                 with col:
+                    # Movie Title
                     st.markdown(
-                    f"<h5 style='text-align:center; min-height:60px'>{names[i]}</h5>",
-                    unsafe_allow_html=True
-                )
+                        f"<h5 style='text-align:center; min-height:60px'>{names[i]}</h5>",
+                        unsafe_allow_html=True
+                    )
 
+                    # Poster → Trailer
                     st.markdown(
-                    f"""
-                    <a href="{trailers[i]}" target="_blank">
-                        <img src="{posters[i]}" style="width:100%; border-radius:10px;">
-                    </a>
-                    """,
-                    unsafe_allow_html=True
-                )
+                        f"""
+                        <a href="{trailers[i]}" target="_blank">
+                            <img src="{posters[i]}" style="width:100%; border-radius:10px;">
+                        </a>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                    # Movie Details
+                    with st.expander("🎬 Movie Details"):
+                        director, release_date = details_list[i]
+                        st.markdown(f"""
+                        **🎥 Title:** {names[i]}  
+                        **🎬 Director:** {director}  
+                        **📅 Release Date:** {release_date}
+                        """)
+
                 i += 1
 
 
-    # Telegram button
-    telegram_link1 = "tg://resolve?domain=Isfjyhehbot"
-    telegram_link2 = "tg://resolve?domain=M4MoviezzBot"
 
-    st.title('🍿 Start Streaming Now')
+# Telegram button
+telegram_link1 = "tg://resolve?domain=Isfjyhehbot"
+telegram_link2 = "tg://resolve?domain=M4MoviezzBot"
 
-    st.subheader('Redirects to our Telegram bot where you can search, watch, or download movies')
+st.title('🍿 Start Streaming Now')
+
+st.subheader('Redirects to our Telegram bot where you can search, watch, or download movies')
 
 
-    st.markdown("""<i>Select a Telegram bot to unlock unlimited movies for streaming or download</i>""",unsafe_allow_html=True)
+st.markdown("""<i>Select a Telegram bot to unlock unlimited movies for streaming or download</i>""",unsafe_allow_html=True)
 
-    st.link_button(
+st.link_button(
     "🎬 BOT 1!",
     telegram_link1
 )
-    st.link_button(
+st.link_button(
     "🎬 BOT 2!",
     telegram_link2
 )
-    st.markdown('''<i>Website where you can download movies without subscription</i>''',unsafe_allow_html=True)
-    st.link_button(
+st.markdown('''<i>Website where you can download movies without subscription</i>''',unsafe_allow_html=True)
+st.link_button(
         "🎬 Moviesmode!",
         'https://moviesmod.cards/'
     )
 
-    st.link_button(
+st.link_button(
         '🎬 Vegamovies!',
         'https://vega-r.com/hollywood-movies/'
     )
-
 
 

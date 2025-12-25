@@ -106,6 +106,7 @@ def fetch_trailer(movie_id):
 
 def details(movie_id):
     director = "Not Available"
+    main_actor = 'Not Available'
     release_date = "No Available"
     try:
         movie_response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=4ba10b19e27e128814cbc0b98281f1b4&language=en-US",timeout=5).json()
@@ -118,9 +119,15 @@ def details(movie_id):
                 director = person.get('name')
                 break
 
+        # main character    
+        cast_list = credits_response.get('cast',[])
+        if cast_list:
+            main_actor = cast_list[0].get('name','Not Available')
+
+
     except Exception as e:
         pass
-    return director , release_date        
+    return main_actor , director , release_date     
 
 
 def recommend(movie):
@@ -181,12 +188,14 @@ if st.button("Recommend"):
 
                     # Movie Details
                     with st.expander("🎬 Movie Details"):
-                        director, release_date = details_list[i]
+                        main_actor ,director, release_date = details_list[i]
                         st.markdown(f"""
-                        **🎥 Title:** {names[i]}  
-                        **🎬 Director:** {director}  
-                        **📅 Release Date:** {release_date}
-                        """)
+                        🎬 <b>Title:</b> {names[i]}<br>
+                        🦸🏼 <b>Character:</b> {main_actor}<br>
+                        🎬 <b>Director:</b> {director}<br>
+                        📅 <b>Release Date:</b> {release_date}<br>
+                        """, unsafe_allow_html=True)
+
 
                 i += 1
 

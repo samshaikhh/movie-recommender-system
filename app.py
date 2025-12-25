@@ -7,7 +7,6 @@ st.set_page_config(page_title="GeniusX",page_icon='🎬')
 
 st.title('🎬 Movie Recommender System')
 
-# Function to set background image
 def add_bg_from_local(image_path):
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode()
@@ -22,14 +21,30 @@ def add_bg_from_local(image_path):
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
-
-            /* Text color for all content */
             color: white;
         }}
 
-        /* Headings specifically */
-        .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {{
+        /* Headings */
+        .stApp h1,
+        .stApp h2,
+        .stApp h3,
+        .stApp h4,
+        .stApp h5,
+        .stApp h6 {{
             color: white;
+        }}
+
+        /* Streamlit button */
+        div.stButton > button {{
+            color: white;
+            background-color: red;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+        }}
+
+        div.stButton > button:hover {{
+            background-color: darkred;
         }}
 
         /* Mobile screens */
@@ -45,8 +60,8 @@ def add_bg_from_local(image_path):
         unsafe_allow_html=True
     )
 
-# Use the function with your path
-add_bg_from_local(r"image.jpeg")
+add_bg_from_local("image.jpeg")
+
 
 
 
